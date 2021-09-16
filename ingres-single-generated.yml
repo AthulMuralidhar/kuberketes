@@ -1,0 +1,10 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingres-single
+spec:
+  defaultBackend:
+    service:
+      name: athul-s-world-cluster-ip
+      port:
+        number: 80

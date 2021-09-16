@@ -1,0 +1,14 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: athul-s-ingress
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: "ws-public-loadbalancer"
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /*
+        backend:
+          serviceName: athul-s-world-node-port
+          servicePort: 80

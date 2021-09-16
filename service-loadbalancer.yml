@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: athul-s-world
+  name: athul-s-world-load-balancer
+spec:
+  ports:
+  - name: load-balancer-service
+    port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: athul-s-world
+  type: LoadBalancer
+  

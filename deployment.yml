@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: athul-s-world
+    run: athul-s-world
+  name: athul-s-world
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: athul-s-world
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: athul-s-world
+    spec:
+      containers:
+      - image: gcr.io/google-samples/hello-app:1.0
+        name: hello-app
+        resources:          
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+
+status: {}
