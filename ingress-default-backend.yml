@@ -1,14 +1,14 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: athul-s-ingress
+  name: athul-s-ingress-default-backend
   namespace: default
 spec:
   defaultBackend:
     service:
-      name: athul-s-world-node-port
+      name: athul-s-world-blue
       port:
-        number: 80
+        number: 4343
 
 # works!
 # if youi get this error:

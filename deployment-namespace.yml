@@ -3,8 +3,8 @@ kind: Deployment
 metadata:
   labels:
     app: athul-s-world
-    run: athul-s-world-pod
   name: athul-s-world
+  namespace: athul-s-namespace
 spec:
   replicas: 3
   selector:

@@ -1,0 +1,31 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: athul-s-ingress-path-based
+  namespace: default
+
+spec:
+  rules:
+  - host: world.example.com
+    http:
+      paths:
+      - path: /red
+        pathType: ImplementationSpecific
+        backend:
+          service: 
+            name: athul-s-world-red
+            port: 
+              number: 4242
+      - path: /blue
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: athul-s-world-blue
+            port:
+              number: 4343
+
+  defaultBackend:
+    service:
+      name: athul-s-world-blue
+      port:
+        number: 4343
