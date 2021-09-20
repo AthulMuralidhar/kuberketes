@@ -1,0 +1,36 @@
+# does not work as yet -  the cluster i was playing with did not have enough resources
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-multi
+  labels:
+    name: myapp-multi
+spec:
+  containers:
+  - name: myapp-producer
+    image: marketplace.gcr.io/google/ubuntu1804
+    command: [ "/bin/bash"]
+    args: ["-c", "while true; do echo $(hostname) $(date) >> /var/log/index.html; sleep 10; done"]
+    volumeMounts:
+      - name: webcontent
+        mountPath: /var/log
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+
+
+  - name: myapp-consumer
+    image:  marketplace.gcr.io/google/nginx1:latest
+    volumeMounts:
+      - name: webcontent
+        mountPath: /usr/share/ngnix/html   
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+    ports:
+      - containerPort: 80
+
+  volumes:
+  - name: webcontent

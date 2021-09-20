@@ -1,0 +1,36 @@
+# does not work as yet -  the cluster i was playing with did not have enough resources
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: athul-s-world-multi-pod
+    run: athul-s-world-multi-pod
+  name: athul-s-world-multi-pod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: athul-s-world
+  template:
+    metadata:
+      labels:
+        app: athul-s-world
+    spec:
+      containers:
+        - image: gcr.io/distroless/static-debian10
+          name: hello-app-1
+          resources:
+            limits:
+              memory: "32Mi"
+              cpu: "200m"
+          ports:
+            - containerPort: 81
+
+        - image: gcr.io/distroless/static-debian10
+          name: hello-app-2
+          resources:
+            limits:
+              memory: "32Mi"
+              cpu: "200m"
+          ports:
+            - containerPort: 80
