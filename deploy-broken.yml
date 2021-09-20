@@ -6,6 +6,7 @@ metadata:
     run: athul-s-world-pod
   name: athul-s-world
 spec:
+  progressDeadlineSeconds: 10
   replicas: 4
   selector:
     matchLabels:
@@ -16,7 +17,7 @@ spec:
         app: athul-s-world
     spec:
       containers:
-      - image: gcr.io/google-samples/hello-app:1.0
+      - image: gcr.io/google-samples/hellasdo-app:1.0
         name: hello-app
         resources:          
           limits:

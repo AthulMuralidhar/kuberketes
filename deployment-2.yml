@@ -6,7 +6,7 @@ metadata:
     run: athul-s-world-pod
   name: athul-s-world
 spec:
-  replicas: 4
+  replicas: 3
   selector:
     matchLabels:
       app: athul-s-world
@@ -16,7 +16,7 @@ spec:
         app: athul-s-world
     spec:
       containers:
-      - image: gcr.io/google-samples/hello-app:1.0
+      - image: gcr.io/google-samples/hello-app:2.0
         name: hello-app
         resources:          
           limits:

@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-on-failure
+  labels:
+    name: myapp
+spec:
+  containers:
+  - name: myapp
+    image:  gcr.io/google-samples/hello-app:1.0
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+  restartPolicy: OnFailure
+
+--- 
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-never
+  labels:
+    name: myapp
+spec:
+  containers:
+  - name: myapp
+    image:  gcr.io/google-samples/hello-app:1.0
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+  restartPolicy: Never

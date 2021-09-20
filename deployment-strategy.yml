@@ -6,6 +6,12 @@ metadata:
     run: athul-s-world-pod
   name: athul-s-world
 spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 13%
+      maxSurge: 1
+  revisionHistoryLimit: 2
   replicas: 4
   selector:
     matchLabels:
@@ -22,4 +28,10 @@ spec:
           limits:
             memory: "128Mi"
             cpu: "500m"
+        readinessProbe:
+          httpGet:
+            path: /index.html
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 10
 
