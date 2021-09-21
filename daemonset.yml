@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: athul-s-daemon
+spec:
+  selector:
+  # can also be match expression
+    matchLabels: 
+      app: athul-s-world
+  template:
+    metadata:
+      labels:
+        app: athul-s-world
+    spec:
+      containers:
+        - name: athul-s-world
+          image: gcr.io/google-samples/hello-app:1.0
+          resources:          
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+

@@ -1,0 +1,21 @@
+# for kube v 1.21+ this is changed to batch/v1
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: myjob-cron
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: ubuntu-18-4
+              image: marketplace.gcr.io/google/ubuntu1804:latest
+              command:
+                - "/bin/bash"
+                - "-c"
+                - "/bin/echo hello from pod $(hostname) at $(date)"
+          # DO NOT FORGET TO DEFINE THIS
+          # NOT DOING SO WILL DEFAULT TO restartPolicy: Always
+          restartPolicy: Never
