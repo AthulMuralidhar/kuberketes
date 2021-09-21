@@ -1,0 +1,14 @@
+# DO NOT APPLY THIS WITHOUT CHECKING FOR EXISTING STORAGE CLASSES
+# ```bash
+# kubectl get StorageClass
+# ```
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: gcp-storage-slow
+paremeters:
+  type: pd-standard
+provisioner: kubernetes.io/gce-pd
+# no reclaim p[olicy provided
+#  this just means that the reclaim goes to "delete"
+# the pv is deleted when the pvc is deleted

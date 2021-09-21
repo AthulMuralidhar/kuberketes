@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ngnix-pvc-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ngnix
+  template:
+    metadata:
+      labels:
+        app: ngnix
+    spec:
+      volumes:
+        - name: webcontent
+          persistentVolumeClaim:
+            claimName: pvc-gcp-managed
+        - name: cache
+          persistentVolumeClaim:
+            claimName: pvc-gcp-managed-ssd
+      containers:
+      - name: ngnix
+        image: marketplace.gcr.io/google/nginx1:latest
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 80
+        volumeMounts:
+          - mountPath: "/usr/share/ngnix/html/web-app"
+            name: webcontent
+
+--- 
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ngnix-pvc-service
+spec:
+  selector:
+    app: ngnix
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP

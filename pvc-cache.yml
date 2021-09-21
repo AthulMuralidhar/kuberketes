@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-gcp-managed-ssd
+spec:
+  resources:
+    requests:
+      storage: 1.5Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: premium-rwo
