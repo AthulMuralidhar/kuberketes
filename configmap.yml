@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: appconfig
+
+data:
+  BACKEND_SERVER_NAME: backend.test.server
+  DATABASE_SERVER_NAME: db.test.server
+

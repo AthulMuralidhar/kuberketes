@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: athul-s-world
+    run: athul-s-world-pod
+  name: athul-s-world
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: athul-s-world
+  template:
+    metadata:
+      labels:
+        app: athul-s-world
+    spec:
+      containers:
+      - image: gcr.io/google-samples/hello-app:1.0
+        name: hello-app
+        resources:          
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+          - containerPort: 8080
+        env:
+          - name: DATABASE_SERVER
+            value: "sql.test.local"
+          - name: BACKEND_SERVER
+            value: "backend.test.local"
+
+--- 
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: athul-s-world-service
+spec:
+  selector:
+    app: athul-s-world
+  ports:
+  - port: 80
+    targetPort: 8080
+    protocol: TCP
