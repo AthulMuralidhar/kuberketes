@@ -1,0 +1,90 @@
+# source: https://kubernetes.io/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wordpress
+  labels:
+    app: wordpress
+spec:
+  selector:
+    matchLabels:
+      app: wordpress
+      tier: frontend
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: wordpress
+        tier: frontend
+    spec:
+      containers:
+      - image: wordpress:4.8-apache
+        name: wordpress
+        resources:
+          requests:
+            #keep at 256 to prevent HTTP_ERROR issue on media upload, libs need this
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "300Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 80
+          name: wordpress
+        volumeMounts:
+        - name: wordpress-persistent-storage
+          mountPath: /var/www/html
+
+        env:
+        - name: WORDPRESS_DB_HOST
+          value: 127.0.0.1:3306
+        - name: WORDPRESS_DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-pass
+              key: password
+        - name: NR_INSTALL_KEY
+          value: eu01xxe1649e9037718c2d93238ffd65664eNRAL
+        - name: NR_APP_NAME
+          value: wordpress-simple-wp
+        - name: WORDPRESS_DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: mysql-pass
+              key: username
+      
+      # cloud sql proxy
+      - name: cloudsql-proxy
+        image: gcr.io/cloudsql-docker/gce-proxy:latest
+        resources:
+          requests:
+            #keep at 256 to prevent HTTP_ERROR issue on media upload, libs need this
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "300Mi"
+            cpu: "500m"
+
+        command:
+          - "/cloud_sql_proxy"
+          - "-instances=wavescale-test-0bbc:europe-west4:test-mysql=tcp:3306"
+          -  "-credential_file=/secrets/credentials.json"
+        volumeMounts:
+          - mountPath: "/secrets"
+            name: cloud-sql-proxy-sa-config
+            readOnly: true
+          - name: ssl-certs
+            mountPath: /etc/ssl/certs
+
+ 
+      volumes:
+      - name: wordpress-persistent-storage
+        persistentVolumeClaim:
+          claimName: wp-pv-claim
+      - name: cloud-sql-proxy-sa-config
+        secret:
+          secretName: cloudsql-instance-credentials
+      - name: ssl-certs
+        hostPath:
+            path: /etc/ssl/certs

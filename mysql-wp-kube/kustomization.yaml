@@ -1,0 +1,11 @@
+secretGenerator:
+- name: mysql-pass
+  literals:
+  - password=<put your pass here>
+  - username=root
+
+resources:
+  - deploy-wordpress.yml
+  - ingress.yml
+  - wordpress-svc.yml
+  - wordpress-pvc.yml

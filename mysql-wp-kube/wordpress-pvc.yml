@@ -1,0 +1,37 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: wp-pv-claim
+  labels:
+    app: wordpress
+spec:
+  volumeName: wp-pv
+  storageClassName: ""
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 25Gi
+
+--- 
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: wp-pv 
+  labels:
+    app: wordpress
+spec:
+  storageClassName: ""
+  capacity:
+    storage: 25Gi 
+  accessModes:
+  - ReadWriteOnce 
+  nfs:
+    path: /data/simple-wp
+    server: 10.0.0.2
+    readOnly: false
+  persistentVolumeReclaimPolicy: Retain
+  claimRef:
+     namespace: default
+     name: wp-pv-claim
