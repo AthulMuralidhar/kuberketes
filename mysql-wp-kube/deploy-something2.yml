@@ -1,24 +1,25 @@
+# source: https://kubernetes.io/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: wordpress
+  name: something2
   labels:
-    app: wordpress
+    app: something2
 spec:
   selector:
     matchLabels:
-      app: wordpress
+      app: something2
       tier: frontend
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: wordpress
+        app: something2
         tier: frontend
     spec:
       containers:
-      - image: wordpress:4.8-apache
+      - image: wordpress:5.8.1-apache
         name: wordpress
         resources:
           requests:
@@ -36,6 +37,8 @@ spec:
           mountPath: /var/www/html
 
         env:
+        - name: WORDPRESS_DB_NAME
+          value: something2
         - name: WORDPRESS_DB_HOST
           value: 127.0.0.1:3306
         - name: WORDPRESS_DB_PASSWORD
@@ -80,8 +83,7 @@ spec:
       volumes:
       - name: wordpress-persistent-storage
         persistentVolumeClaim:
-          claimName: wp-pv-claim
-
+          claimName: something2-pv-claim
       - name: cloud-sql-proxy-sa-config
         secret:
           secretName: cloudsql-instance-credentials

@@ -3,11 +3,25 @@ kind: Ingress
 metadata:
   name: wordpress-ingress 
   annotations: 
-    ingress.gcp.kubernetes.io/pre-shared-cert: something
+    ingress.gcp.kubernetes.io/pre-shared-cert: something, something2
+    kubernetes.io/ingress.global-static-ip-name: test-wp-static
+    # with the setting here, this blocks all incoming http traffic from the client
+    # we will need to redrirect user traffic to https
+    # kubernetes.io/ingress.allow-http: "false"
 
 
 spec:
   rules:
+  - host: something2.wavescale.cloud
+    http:
+      paths:
+      - pathType: ImplementationSpecific
+        backend:
+          service: 
+            name: something2-svc
+            port: 
+              number: 80
+            
   - host: something.wavescale.cloud
     http:
       paths:
@@ -18,9 +32,3 @@ spec:
             port: 
               number: 80
             
-
-  defaultBackend:
-    service:
-      name: wordpress-svc
-      port:
-        number: 80

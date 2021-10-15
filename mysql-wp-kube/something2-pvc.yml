@@ -1,10 +1,11 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: wp-pv-claim
+  name: something2-pv-claim
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
       storage: 25Gi
+
